@@ -9,7 +9,7 @@ test.describe('DS-1: Create Program', () => {
     await page.getByRole('button', { name: 'Sign In' }).click();
 
     // Wait for dashboard to load, then navigate to Programs
-    await page.getByText('Programs', { exact: true }).first().click();
+    await page.getByRole('link', { name: 'Programs', exact: true }).click();
     await page.waitForURL('**/programs');
   });
 

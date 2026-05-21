@@ -1,0 +1,24 @@
+{
+  "name": "block2-playwright-tests",
+  "version": "1.0.0",
+  "description": "Playwright tests for Block2 features (DS-1 to DS-5)",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "test:debug": "npx playwright test --debug",
+    "test:ds1": "npx playwright test ds1-create-program.spec.ts",
+    "test:ds2": "npx playwright test ds2-edit-program.spec.ts",
+    "test:ds3": "npx playwright test ds3-program-name-validation.spec.ts",
+    "test:ds4": "npx playwright test ds4-delete-program.spec.ts",
+    "test:ds5": "npx playwright test ds5-display-program-list.spec.ts",
+    "report": "npx playwright show-report ./test-results/html-report"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.52.0",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  }
+}

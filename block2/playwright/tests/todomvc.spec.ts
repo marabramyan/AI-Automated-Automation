@@ -315,12 +315,12 @@ test.describe('TodoMVC - Negative Flows', () => {
   });
 
   test('TC-022: Footer not visible when no todos', async ({ page }) => {
-    await expect(page.locator('.footer')).not.toBeVisible();
+    await expect(page.locator('footer.footer')).not.toBeVisible();
     await expect(page.getByTestId('todo-count')).not.toBeVisible();
   });
 
   test('TC-023: Main section not visible when no todos', async ({ page }) => {
-    await expect(page.locator('.main')).not.toBeVisible();
+    await expect(page.locator('section.main')).not.toBeVisible();
     await expect(page.getByLabel('Mark all as complete')).not.toBeVisible();
   });
 });
@@ -369,7 +369,7 @@ test.describe('TodoMVC - Edge Cases', () => {
 
     await expect(page.getByTestId('todo-item')).toHaveCount(1);
     // Should be trimmed
-    const todoText = await page.getByTestId('todo-item').locator('label').textContent();
+    const todoText = await page.getByTestId('todo-item').getByTestId('todo-title').textContent();
     expect(todoText).toBe('Buy groceries');
   });
 
