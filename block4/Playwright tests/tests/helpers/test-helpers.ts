@@ -9,6 +9,11 @@ export async function login(page: Page): Promise<void> {
   await page.getByLabel('Email').fill(EMAIL);
   await page.getByLabel('Password').fill(PASSWORD);
   await page.getByRole('button', { name: 'Sign In' }).click();
+  // Wait for dashboard to load after login
+  await page.waitForURL('**/');
+  await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+  // Navigate to Programs page - click on sidebar navigation
+  await page.locator('nav').getByText('Programs').click();
   await page.waitForURL('**/programs');
 }
 
@@ -29,15 +34,18 @@ export async function createProgram(page: Page, name: string, description?: stri
 }
 
 export async function openEditForm(page: Page, programName: string): Promise<void> {
-  const programRow = page.getByRole('row').filter({ hasText: programName });
-  await programRow.getByRole('button', { name: /edit/i }).click();
+  const programRow = page.locator('tr').filter({ hasText: programName });
+  // Edit button uses ✏️ emoji
+  await programRow.getByRole('button', { name: '✏️' }).click();
   await page.getByLabel('Program Name').waitFor();
 }
 
 export async function deleteProgram(page: Page, programName: string): Promise<void> {
-  const programRow = page.getByRole('row').filter({ hasText: programName });
-  await programRow.getByRole('button', { name: /delete/i }).click();
-  await page.getByRole('button', { name: /confirm|delete/i }).click();
+  const programRow = page.locator('tr').filter({ hasText: programName });
+  // Delete button uses 🗑 emoji
+  await programRow.getByRole('button', { name: '🗑' }).click();
+  // Wait for confirmation dialog and confirm
+  await page.getByRole('button', { name: /confirm|delete|yes/i }).click();
   await expect(page.getByText(programName)).not.toBeVisible();
 }
 

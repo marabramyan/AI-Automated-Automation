@@ -13,8 +13,8 @@ test.describe('DS-4: Delete Program', () => {
       testProgramName = generateUniqueName('Delete Test');
       await createProgram(page, testProgramName, 'Program to be deleted');
 
-      const programRow = page.getByRole('row').filter({ hasText: testProgramName });
-      await programRow.getByRole('button', { name: /delete/i }).click();
+      const programRow = page.locator('tr').filter({ hasText: testProgramName });
+      await programRow.getByRole('button', { name: '🗑' }).click();
 
       // Confirm deletion
       await page.getByRole('button', { name: /confirm|delete|yes/i }).click();
@@ -26,8 +26,8 @@ test.describe('DS-4: Delete Program', () => {
       testProgramName = generateUniqueName('Dialog Test');
       await createProgram(page, testProgramName, 'Test program');
 
-      const programRow = page.getByRole('row').filter({ hasText: testProgramName });
-      await programRow.getByRole('button', { name: /delete/i }).click();
+      const programRow = page.locator('tr').filter({ hasText: testProgramName });
+      await programRow.getByRole('button', { name: '🗑' }).click();
 
       // Verify dialog appears
       await expect(page.getByRole('dialog')).toBeVisible();
@@ -38,8 +38,8 @@ test.describe('DS-4: Delete Program', () => {
       testProgramName = generateUniqueName('Cancel Delete');
       await createProgram(page, testProgramName, 'Test program');
 
-      const programRow = page.getByRole('row').filter({ hasText: testProgramName });
-      await programRow.getByRole('button', { name: /delete/i }).click();
+      const programRow = page.locator('tr').filter({ hasText: testProgramName });
+      await programRow.getByRole('button', { name: '🗑' }).click();
 
       // Cancel deletion
       await page.getByRole('button', { name: /cancel|no/i }).click();
@@ -51,8 +51,8 @@ test.describe('DS-4: Delete Program', () => {
       testProgramName = generateUniqueName('Close Dialog');
       await createProgram(page, testProgramName, 'Test program');
 
-      const programRow = page.getByRole('row').filter({ hasText: testProgramName });
-      await programRow.getByRole('button', { name: /delete/i }).click();
+      const programRow = page.locator('tr').filter({ hasText: testProgramName });
+      await programRow.getByRole('button', { name: '🗑' }).click();
 
       // Close dialog with Escape
       await page.keyboard.press('Escape');
@@ -74,8 +74,8 @@ test.describe('DS-4: Delete Program', () => {
 
       // Delete all programs
       for (const name of programs) {
-        const programRow = page.getByRole('row').filter({ hasText: name });
-        await programRow.getByRole('button', { name: /delete/i }).click();
+        const programRow = page.locator('tr').filter({ hasText: name });
+        await programRow.getByRole('button', { name: '🗑' }).click();
         await page.getByRole('button', { name: /confirm|delete|yes/i }).click();
         await expect(page.getByText(name)).not.toBeVisible();
       }
@@ -85,14 +85,14 @@ test.describe('DS-4: Delete Program', () => {
       testProgramName = generateUniqueName('Immediate Update');
       await createProgram(page, testProgramName, 'Test program');
 
-      const initialCount = await page.getByRole('row').filter({ hasText: /Program/ }).count();
+      const initialCount = await page.locator('tr').filter({ hasText: /Program/ }).count();
 
-      const programRow = page.getByRole('row').filter({ hasText: testProgramName });
-      await programRow.getByRole('button', { name: /delete/i }).click();
+      const programRow = page.locator('tr').filter({ hasText: testProgramName });
+      await programRow.getByRole('button', { name: '🗑' }).click();
       await page.getByRole('button', { name: /confirm|delete|yes/i }).click();
 
       // List should update without page refresh
-      const newCount = await page.getByRole('row').filter({ hasText: /Program/ }).count();
+      const newCount = await page.locator('tr').filter({ hasText: /Program/ }).count();
       expect(newCount).toBeLessThan(initialCount);
     });
   });
@@ -103,8 +103,8 @@ test.describe('DS-4: Delete Program', () => {
       await createProgram(page, testProgramName, 'Test program');
 
       // Get program ID if available from URL or element
-      const programRow = page.getByRole('row').filter({ hasText: testProgramName });
-      await programRow.getByRole('button', { name: /delete/i }).click();
+      const programRow = page.locator('tr').filter({ hasText: testProgramName });
+      await programRow.getByRole('button', { name: '🗑' }).click();
       await page.getByRole('button', { name: /confirm|delete|yes/i }).click();
 
       // Try to access deleted program (assuming URL pattern)
@@ -121,8 +121,8 @@ test.describe('DS-4: Delete Program', () => {
       testProgramName = generateUniqueName('Double Click');
       await createProgram(page, testProgramName, 'Test program');
 
-      const programRow = page.getByRole('row').filter({ hasText: testProgramName });
-      const deleteButton = programRow.getByRole('button', { name: /delete/i });
+      const programRow = page.locator('tr').filter({ hasText: testProgramName });
+      const deleteButton = programRow.getByRole('button', { name: '🗑' });
 
       // Double click should only open one dialog
       await deleteButton.dblclick();
@@ -137,8 +137,8 @@ test.describe('DS-4: Delete Program', () => {
       testProgramName = `Développement & IA ${Date.now()}`;
       await createProgram(page, testProgramName, 'Test program');
 
-      const programRow = page.getByRole('row').filter({ hasText: testProgramName });
-      await programRow.getByRole('button', { name: /delete/i }).click();
+      const programRow = page.locator('tr').filter({ hasText: testProgramName });
+      await programRow.getByRole('button', { name: '🗑' }).click();
 
       // Verify dialog displays name correctly
       await expect(page.getByText(testProgramName)).toBeVisible();
@@ -152,7 +152,7 @@ test.describe('DS-4: Delete Program', () => {
       await createProgram(page, testProgramName, 'The only program');
 
       // Delete all existing programs
-      const deleteButtons = page.getByRole('button', { name: /delete/i });
+      const deleteButtons = page.getByRole('button', { name: '🗑' });
       const count = await deleteButtons.count();
 
       for (let i = 0; i < count; i++) {
@@ -169,8 +169,8 @@ test.describe('DS-4: Delete Program', () => {
       testProgramName = generateUniqueName('Keyboard Nav');
       await createProgram(page, testProgramName, 'Test program');
 
-      const programRow = page.getByRole('row').filter({ hasText: testProgramName });
-      await programRow.getByRole('button', { name: /delete/i }).click();
+      const programRow = page.locator('tr').filter({ hasText: testProgramName });
+      await programRow.getByRole('button', { name: '🗑' }).click();
 
       // Navigate with Tab and close with Escape
       await page.keyboard.press('Tab');

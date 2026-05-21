@@ -18,7 +18,7 @@ test.describe('DS-5: Display Program List', () => {
       await login(page);
 
       // Delete all programs first
-      const deleteButtons = page.getByRole('button', { name: /delete/i });
+      const deleteButtons = page.getByRole('button', { name: '🗑' });
       let count = await deleteButtons.count();
 
       while (count > 0) {
@@ -35,7 +35,7 @@ test.describe('DS-5: Display Program List', () => {
       await login(page);
 
       // Delete all programs
-      const deleteButtons = page.getByRole('button', { name: /delete/i });
+      const deleteButtons = page.getByRole('button', { name: '🗑' });
       let count = await deleteButtons.count();
 
       while (count > 0) {
@@ -55,7 +55,7 @@ test.describe('DS-5: Display Program List', () => {
       const programName = generateUniqueName('Single Program');
       await createProgram(page, programName, 'Single program description');
 
-      const programRows = page.getByRole('row').filter({ hasText: programName });
+      const programRows = page.locator('tr').filter({ hasText: programName });
       await expect(programRows).toHaveCount(1);
     });
 
@@ -90,12 +90,12 @@ test.describe('DS-5: Display Program List', () => {
     test('TC-007: List updates after creating new program', async ({ page }) => {
       await login(page);
 
-      const initialCount = await page.getByRole('row').count();
+      const initialCount = await page.locator('tr').count();
 
       const newProgram = generateUniqueName('New List Item');
       await createProgram(page, newProgram, 'New program description');
 
-      const newCount = await page.getByRole('row').count();
+      const newCount = await page.locator('tr').count();
       expect(newCount).toBeGreaterThan(initialCount);
       await expect(page.getByText(newProgram)).toBeVisible();
     });
@@ -197,13 +197,13 @@ test.describe('DS-5: Display Program List', () => {
       await login(page);
 
       // Get initial order
-      const programNames = await page.getByRole('row').allTextContents();
+      const programNames = await page.locator('tr').allTextContents();
 
       // Refresh page
       await page.reload();
 
       // Order should be consistent
-      const newProgramNames = await page.getByRole('row').allTextContents();
+      const newProgramNames = await page.locator('tr').allTextContents();
       expect(programNames).toEqual(newProgramNames);
     });
   });
