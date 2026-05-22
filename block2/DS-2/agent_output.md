@@ -8,8 +8,8 @@
 |------|---------|
 | **Feature** | Edit Program |
 | **Ticket** | DS-2 |
-| **Total Test Cases** | 15 |
-| **Priority Breakdown** | High: 6 · Medium: 5 · Low: 4 |
+| **Total Test Cases** | 19 |
+| **Priority Breakdown** | High: 8 · Medium: 6 · Low: 5 |
 
 ---
 
@@ -184,6 +184,56 @@
 
 ---
 
+## 🔒 Robustness & Performance Test Cases
+
+### TC-016: Double-click Save button protection
+| Field | Value |
+|-------|-------|
+| **Title** | Rapid double-click on Save does not cause duplicate submissions |
+| **Preconditions** | User is editing an existing program |
+| **Steps** | 1. Open edit form<br>2. Change Name to "Updated Program"<br>3. Rapidly double-click the Save button |
+| **Expected Result** | Save button is disabled after first click; Only one save request is sent; Modal closes normally; No duplicate entries created |
+| **Priority** | High |
+| **Bug Reference** | DS-41 |
+
+---
+
+### TC-017: Duplicate name validation on edit (case-insensitive)
+| Field | Value |
+|-------|-------|
+| **Title** | Case-insensitive duplicate name validation on edit |
+| **Preconditions** | Programs "Program Alpha" and "Program Beta" exist |
+| **Steps** | 1. Open edit form for "Program Beta"<br>2. Change Name to "PROGRAM ALPHA" (different case)<br>3. Click Save |
+| **Expected Result** | Error message displayed indicating name already exists; Save is blocked |
+| **Priority** | Medium |
+| **Bug Reference** | DS-38 |
+
+---
+
+### TC-018: Maximum length name performance
+| Field | Value |
+|-------|-------|
+| **Title** | Saving 255-character name completes within acceptable time |
+| **Preconditions** | User is editing an existing program |
+| **Steps** | 1. Open edit form<br>2. Enter exactly 255 characters in Name field<br>3. Click Save<br>4. Measure response time |
+| **Expected Result** | Save completes within 5 seconds; No timeout occurs; Modal closes normally |
+| **Priority** | High |
+| **Bug Reference** | DS-40 |
+
+---
+
+### TC-019: Human-paced double-click on Save
+| Field | Value |
+|-------|-------|
+| **Title** | Normal-speed double-click on Save is handled gracefully |
+| **Preconditions** | User is editing an existing program |
+| **Steps** | 1. Open edit form<br>2. Make a valid change to the program<br>3. Double-click Save at normal human speed (~300-500ms between clicks) |
+| **Expected Result** | Modal closes after first click completes; Second click has no effect; No error displayed; No stuck modal state |
+| **Priority** | High |
+| **Bug Reference** | DS-41 |
+
+---
+
 ## ⚠️ Ambiguities & Gaps in Acceptance Criteria
 
 | # | Issue | Recommendation |
@@ -194,3 +244,20 @@
 | 4 | **Cancel/close behavior not specified** | Define what happens when user closes modal without saving |
 | 5 | **Permission requirements not stated** | Clarify who can edit programs (roles/permissions) |
 | 6 | **Concurrent edit handling not addressed** | Define behavior when multiple users edit same program |
+
+---
+
+## 🐛 Known Bugs from Automated Testing
+
+| Bug ID | Description | Test Case | Status |
+|--------|-------------|-----------|--------|
+| DS-38 | App allows editing program name to match existing program - no uniqueness validation | TC-009, TC-017 | Open |
+| DS-39 | Edit form accepts names exceeding 255 characters - no max-length validation | TC-013 | Open |
+| DS-40 | Saving 255-character name times out after 30 seconds | TC-012, TC-018 | Open |
+| DS-41 | Double-clicking Save leaves modal stuck open - no duplicate submission guard | TC-016, TC-019 | Open |
+
+---
+
+## 📝 Test Execution Notes
+
+Test cases TC-007 through TC-019 have been validated through Playwright automated testing. The bugs listed above were discovered during this validation phase and are tracked in Jira.
